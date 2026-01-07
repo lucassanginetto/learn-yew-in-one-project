@@ -1,0 +1,84 @@
+use std::ops::Deref;
+
+use gloo_storage::{LocalStorage, Storage};
+// use yew::{Hook, component, use_context};
+use yew::prelude::*;
+
+use crate::services::Movie;
+
+#[derive(Clone, PartialEq)]
+pub struct MovieContext {
+    pub favorites: UseStateHandle<Vec<Movie>>,
+    pub add_to_favorites: Callback<Movie>,
+    pub remove_from_favorites: Callback<u32>,
+    pub is_favorite: Callback<u32, bool>,
+}
+
+pub fn use_movie_context() -> impl Hook<Output = Option<MovieContext>> {
+    use_context::<MovieContext>()
+}
+
+#[derive(Properties, PartialEq)]
+pub struct MovieProviderProps {
+    pub children: Html,
+}
+
+#[component]
+pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Html {
+    let favorites = use_state(|| Vec::<Movie>::new());
+
+    {
+        let favorites = favorites.clone();
+        use_effect_with((), move |_| {
+            let stored_favs = LocalStorage::get("favorites");
+
+            if let Ok(favs) = stored_favs {
+                favorites.set(favs);
+            }
+        });
+    }
+
+    {
+        let favorites = favorites.clone();
+        use_effect_with(favorites.clone(), move |_| {
+            LocalStorage::set("favorites", &*favorites);
+        });
+    }
+
+    let add_to_favorites = {
+        let favorites = favorites.clone();
+        Callback::from(move |movie| {
+            let mut favs = Vec::from(favorites.deref().clone());
+            favs.push(movie);
+            favorites.set(favs);
+        })
+    };
+
+    let remove_from_favorites = {
+        let favorites = favorites.clone();
+        Callback::from(move |movie_id: u32| {
+            let favs = Vec::from(favorites.deref().clone());
+            favorites.set(
+                favs.into_iter()
+                    .filter(|movie| movie.id != movie_id)
+                    .collect(),
+            );
+        })
+    };
+
+    let is_favorite = {
+        let favorites = favorites.clone();
+        Callback::from(move |movie_id: u32| {
+            favorites
+                .iter()
+                .find(|movie| movie.id == movie_id)
+                .is_some()
+        })
+    };
+
+    html!(
+        <ContextProvider<MovieContext> context={MovieContext{favorites, add_to_favorites, remove_from_favorites, is_favorite}}>
+            {children}
+        </ContextProvider<MovieContext>>
+    )
+}
