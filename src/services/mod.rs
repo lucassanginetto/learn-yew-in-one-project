@@ -16,10 +16,7 @@ pub struct Movie {
 
 #[derive(Deserialize)]
 struct GetMoviePopular {
-    page: u32,
     results: Vec<Movie>,
-    total_pages: u32,
-    total_results: u32,
 }
 
 pub struct ApiError(GlooNetError);
