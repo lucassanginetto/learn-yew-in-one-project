@@ -33,7 +33,7 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
 
     {
         let favorites = favorites.clone();
-        use_effect_with((), move |_| {
+        use_effect(move || {
             let stored_favs = LocalStorage::get("favorites");
 
             if let Ok(favs) = stored_favs {

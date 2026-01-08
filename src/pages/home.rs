@@ -19,7 +19,7 @@ pub fn Home() -> Html {
         let movies = movies.clone();
         let error = error.clone();
         let loading = loading.clone();
-        use_effect_with((), move |_| {
+        use_effect(move || {
             let movies = movies.clone();
             let error = error.clone();
             let load_popular_movies = async move {
