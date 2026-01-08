@@ -1,5 +1,3 @@
-use std::ops::Deref;
-
 use gloo_console::log;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlInputElement;
@@ -84,7 +82,7 @@ pub fn Home() -> Html {
                     type="text"
                     placeholder="Search for movies..."
                     class="search-input"
-                    value={search_query.deref().clone()}
+                    value={(*search_query).clone()}
                     oninput={{
                         let search_query = search_query.clone();
 

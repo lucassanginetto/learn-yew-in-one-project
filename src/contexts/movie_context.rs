@@ -1,5 +1,3 @@
-use std::ops::Deref;
-
 use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
 
@@ -52,7 +50,7 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
     let add_to_favorites = {
         let favorites = favorites.clone();
         Callback::from(move |movie| {
-            let mut favs = Vec::from(favorites.deref().clone());
+            let mut favs = Vec::from((*favorites).clone());
             favs.push(movie);
             favorites.set(favs);
         })
@@ -61,7 +59,7 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
     let remove_from_favorites = {
         let favorites = favorites.clone();
         Callback::from(move |movie_id: u32| {
-            let favs = Vec::from(favorites.deref().clone());
+            let favs = Vec::from((*favorites).clone());
             favorites.set(
                 favs.into_iter()
                     .filter(|movie| movie.id != movie_id)
