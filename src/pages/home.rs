@@ -54,6 +54,7 @@ pub fn Home() -> Html {
                 let movies = movies.clone();
                 let search_query = search_query.clone();
                 let error = error.clone();
+                let loading = loading.clone();
                 let load_search_movies = async move {
                     match search_movies(&*search_query).await {
                         Ok(search_results) => {
@@ -65,11 +66,10 @@ pub fn Home() -> Html {
                             error.set(Some("Failed to search movies...".into()));
                         }
                     }
+                    loading.set(false);
                 };
                 wasm_bindgen_futures::spawn_local(load_search_movies);
             }
-
-            loading.set(false);
         })
     };
 
