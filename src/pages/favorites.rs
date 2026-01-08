@@ -26,10 +26,9 @@ pub fn Favorites() -> Html {
     }
 
     html!(
-    <div>
-        <style>{include_str!("../css/favorites.css")}</style>
-        <h2>{"No Favorite Movies Yet"}</h2>
-        <p>{"Start adding movies to your favorites and they will appear here!"}</p>
-    </div>
+        <div class="favorites-empty">
+            <h2>{"No Favorite Movies Yet"}</h2>
+            <p>{"Start adding movies to your favorites and they will appear here!"}</p>
+        </div>
     )
 }

@@ -19,11 +19,6 @@ pub enum Route {
 #[component]
 pub fn App() -> Html {
     html!(
-    <>
-        <style>
-            {include_str!("./css/index.css")}
-            {include_str!("./css/app.css")}
-        </style>
         <MovieProvider>
             <BrowserRouter>
                 <NavBar/>
@@ -36,7 +31,6 @@ pub fn App() -> Html {
                 </main>
             </BrowserRouter>
         </MovieProvider>
-    </>
     )
 }
 

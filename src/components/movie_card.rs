@@ -37,8 +37,6 @@ pub fn MovieCard(MovieCardProps { movie }: &MovieCardProps) -> Html {
     };
 
     html!(
-    <>
-        <style>{include_str!("../css/movie_card.css")}</style>
         <div class="movie-card">
             <div class="movie-poster">
                 <img src={format!("https://image.tmdb.org/t/p/w500{}", movie.poster_path)} alt={movie.title.clone()}/>
@@ -53,6 +51,5 @@ pub fn MovieCard(MovieCardProps { movie }: &MovieCardProps) -> Html {
                 <p>{movie.release_date.split("-").next().unwrap()}</p>
             </div>
         </div>
-    </>
     )
 }

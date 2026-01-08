@@ -72,10 +72,6 @@ pub fn Home() -> Html {
     };
 
     html!(
-    <>
-        <style>
-            {include_str!("../css/home.css")}
-        </style>
         <div class="home">
             <form onsubmit={handle_search} class="search-form">
                 <input
@@ -101,7 +97,7 @@ pub fn Home() -> Html {
             </form>
 
             if let Some(err) = &*error {
-                <div>{err.to_string()}</div>
+                <div class="error-message">{err.to_string()}</div>
             }
 
             if *loading {
@@ -117,6 +113,5 @@ pub fn Home() -> Html {
                 </div>
             }
         </div>
-    </>
     )
 }
