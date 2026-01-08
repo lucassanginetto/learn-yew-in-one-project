@@ -31,11 +31,11 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
 
     {
         let favorites = favorites.clone();
-        use_effect(move || {
-            let stored_favs = LocalStorage::get("favorites");
-
-            if let Ok(favs) = stored_favs {
-                favorites.set(favs);
+        use_effect_with((), move |_| {
+            if let Ok(stored_favs) = LocalStorage::get("favorites")
+                && *favorites != stored_favs
+            {
+                favorites.set(stored_favs);
             }
         });
     }
@@ -43,7 +43,7 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
     {
         let favorites = favorites.clone();
         use_effect_with(favorites.clone(), move |_| {
-            LocalStorage::set("favorites", &*favorites);
+            let _ = LocalStorage::set("favorites", &*favorites);
         });
     }
 
