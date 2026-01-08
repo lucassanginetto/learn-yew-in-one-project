@@ -12,13 +12,14 @@ pub struct MovieCardProps {
 
 #[component]
 pub fn MovieCard(MovieCardProps { movie }: &MovieCardProps) -> Html {
+    let movie_context = use_movie_context().expect("Movie Context not found");
+    let favorite = movie_context.is_favorite(movie.id);
+
     let MovieContext {
-        is_favorite,
         add_to_favorites,
         remove_from_favorites,
         ..
-    } = use_movie_context().expect("Movie Context not found");
-    let favorite = is_favorite.emit(movie.id);
+    } = movie_context;
 
     let on_favorite_click = {
         let movie = movie.clone();

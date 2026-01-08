@@ -1,7 +1,6 @@
 use std::ops::Deref;
 
 use gloo_storage::{LocalStorage, Storage};
-// use yew::{Hook, component, use_context};
 use yew::prelude::*;
 
 use crate::services::Movie;
@@ -11,7 +10,12 @@ pub struct MovieContext {
     pub favorites: UseStateHandle<Vec<Movie>>,
     pub add_to_favorites: Callback<Movie>,
     pub remove_from_favorites: Callback<u32>,
-    pub is_favorite: Callback<u32, bool>,
+}
+
+impl MovieContext {
+    pub fn is_favorite(&self, movie_id: u32) -> bool {
+        self.favorites.iter().any(|movie| movie.id == movie_id)
+    }
 }
 
 pub fn use_movie_context() -> impl Hook<Output = Option<MovieContext>> {
@@ -66,18 +70,8 @@ pub fn MovieProvider(MovieProviderProps { children }: &MovieProviderProps) -> Ht
         })
     };
 
-    let is_favorite = {
-        let favorites = favorites.clone();
-        Callback::from(move |movie_id: u32| {
-            favorites
-                .iter()
-                .find(|movie| movie.id == movie_id)
-                .is_some()
-        })
-    };
-
     html!(
-        <ContextProvider<MovieContext> context={MovieContext{favorites, add_to_favorites, remove_from_favorites, is_favorite}}>
+        <ContextProvider<MovieContext> context={MovieContext{favorites, add_to_favorites, remove_from_favorites}}>
             {children}
         </ContextProvider<MovieContext>>
     )
