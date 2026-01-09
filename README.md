@@ -1,0 +1,1 @@
+This is based on the [Learn React Project by techwithtim](https://github.com/techwithtim/Learn-React-In-One-Project)([Youtube video](https://youtu.be/G6D9cBaLViA)), but using Rust and Yew instead of JavaScript and React.
